@@ -3,7 +3,7 @@
 
 #include <steering_wheel.h>
 #include "main.h"
-//#include "gopher_sense.h"
+#include "gopher_sense.h"
 #include "GopherCAN.h"
 
 // the HAL_CAN struct. This example only works for a single CAN bus
@@ -20,60 +20,46 @@ U8 display_page = 1;
 
 
 // the CAN callback function used in this example
-static void change_led_state(U8 sender, void* UNUSED_LOCAL_PARAM, U8 remote_param, U8 UNUSED1, U8 UNUSED2, U8 UNUSED3);
+static void change_led_state(MODULE_ID sender, U8 remote_param, U8 UNUSED1, U8 UNUSED2, U8 UNUSED3);
 static void init_error(void);
 
-BUTTON swUpshift = {
-    .param = &swUpshift_state,
-    .port = Up_Shift_In_GPIO_Port,
-    .pin = Up_Shift_In_Pin
-};
-
-BUTTON swDownshift = {
-    .param = &swDownshift_state,
-    .port = Down_Shift_In_GPIO_Port,
-    .pin = Down_Shift_In_Pin
-};
-
 BUTTON swButton0 = {
-    .param = &swButton0_state,
+    .param = &swButon0_state,
     .port = Face_BTN0_In_GPIO_Port,
     .pin = Face_BTN0_In_Pin
 };
 
 BUTTON swButton1 = {
-    .param = &swButton1_state,
+    .param = &swButon1_state,
     .port = Face_BTN1_In_GPIO_Port,
     .pin = Face_BTN1_In_Pin
 };
 
 BUTTON swButton2 = {
-    .param = &swButton2_state,
+    .param = &swButon2_state,
     .port = Face_BTN2_In_GPIO_Port,
     .pin = Face_BTN2_In_Pin
 };
 
 BUTTON swButton3 = {
-    .param = &swButton3_state,
+    .param = &swButon3_state,
     .port = Face_BTN3_In_GPIO_Port,
     .pin = Face_BTN3_In_Pin
 };
 
 BUTTON swButton4 = {
-    .param = &swButton4_state,
+    .param = &swButon4_state,
     .port = Face_BTN4_In_GPIO_Port,
     .pin = Face_BTN4_In_Pin
 };
 
 BUTTON swButton5 = {
-    .param = &swButton5_state,
+    .param = &swButon5_state,
     .port = Face_BTN5_In_GPIO_Port,
     .pin = Face_BTN5_In_Pin
 };
 
 BUTTON* buttons[NUM_OF_BUTTONS] = {
-    &swUpshift,
-    &swDownshift,
 	&swButton0,
     &swButton1,
     &swButton2,
@@ -88,27 +74,11 @@ void init(CAN_HandleTypeDef* hcan_ptr)
 {
 	example_hcan = hcan_ptr;
 
-	// initialize CAN
-	// NOTE: CAN will also need to be added in CubeMX and code must be generated
-	// Check the STM_CAN repo for the file "F0xx CAN Config Settings.pptx" for the correct settings
-	if (init_can(GCAN0, example_hcan, THIS_MODULE_ID, BXTYPE_MASTER))
-	{
+	if (init_can(example_hcan, GCAN0)){
 		init_error();
 	}
 
-	// Set the function pointer of SET_LED_STATE. This means the function change_led_state()
-	// will be run whenever this can command is sent to the module
-	if (add_custom_can_func(SET_LED_STATE, &change_led_state, TRUE, NULL))
-	{
-		init_error();
-	}
-
-	// lock param sending for all of the buttons
-//	for (U8 i = 0; i < NUM_OF_BUTTONS; i++) {
-//	    lock_param_sending(&buttons[i]->param->info);
-//	}
-
-//	lock_param_sending(&swDial_ul.info);
+	attach_callback_cmd(SET_LED_STATE, &change_led_state);
 }
 
 
@@ -145,9 +115,6 @@ U8 rot_a_result;
 U8 rot_b_result;
 
 
-static U8 BTN0, BTN1, BTN2, BTN3, BTN4, BTN5, BTN6, BTN7, ROTA1, ROTA2, ROTA3, ROTA4, ROTB1, ROTB2, ROTB3, ROTB4;
-
-
 // main_loop
 //  another loop. This includes logic for sending a CAN command. Designed to be
 //  called every 10ms
@@ -161,7 +128,8 @@ void main_loop()
 	    U8 new_state = !HAL_GPIO_ReadPin(btn->port, btn->pin);
 	    if (new_state != btn->param->data) {
 			// button state has changed, send message immediately
-			send_parameter(&btn->param->info);
+			//send_parameter(&btn->param->info);
+			//update_and_queue_param_u8(&btn->param, new_state);
 	    }
 	    btn->param->data = new_state;
     }
@@ -230,12 +198,12 @@ void main_loop()
 //  by parameter to remote_param. In this case parameter is a U16*, but
 //  any data type can be pointed to, as long as it is configured and casted
 //  correctly
-static void change_led_state(U8 sender, void* parameter, U8 remote_param, U8 UNUSED1, U8 UNUSED2, U8 UNUSED3)
+
+static void change_led_state(MODULE_ID sender, U8 remote_param, U8 UNUSED1, U8 UNUSED2, U8 UNUSED3)
 {
-	//HAL_GPIO_WritePin(GRN_LED_GPIO_Port, GRN_LED_Pin, !!remote_param);
+	HAL_GPIO_WritePin(GSENSE_LED_GPIO_Port, GSENSE_LED_Pin, !!remote_param);
 	return;
 }
-
 
 // init_error
 //  This function will stay in an infinite loop, blinking the LED in a 0.5sec period. Should only

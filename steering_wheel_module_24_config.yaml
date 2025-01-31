@@ -5,35 +5,27 @@ buckets:
     bucket_1:
         frequency_hz: 250
         parameters:
-            swUpshift_state:
+            swButon0_state:
               ADC: NON_ADC
               sensor: NON_ADC
               samples_buffered: 1
-            swDownshift_state:
+            swButon1_state:
               ADC: NON_ADC
               sensor: NON_ADC
               samples_buffered: 1
-            swButton0_state:
+            swButon2_state:
               ADC: NON_ADC
               sensor: NON_ADC
               samples_buffered: 1
-            swButton1_state:
+            swButon3_state:
               ADC: NON_ADC
               sensor: NON_ADC
               samples_buffered: 1
-            swButton2_state:
+            swButon4_state:
               ADC: NON_ADC
               sensor: NON_ADC
               samples_buffered: 1
-            swButton3_state:
-              ADC: NON_ADC
-              sensor: NON_ADC
-              samples_buffered: 1
-            swButton4_state:
-              ADC: NON_ADC
-              sensor: NON_ADC
-              samples_buffered: 1
-            swButton5_state:
+            swButon5_state:
               ADC: NON_ADC
               sensor: NON_ADC
               samples_buffered: 1
