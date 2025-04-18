@@ -22,6 +22,6 @@ typedef struct {
     U16 pin;
 } BUTTON;
 
-#define NUM_OF_BUTTONS 8
+#define NUM_OF_BUTTONS 6
 
 #endif

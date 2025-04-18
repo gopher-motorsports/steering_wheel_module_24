@@ -113,6 +113,7 @@ U8 rot_b_sw3_in;
 //will store the bitwise version of all rotary inputs, Ex: rot0 = 1, rot1 = 1, rot2 = 1, and rot3 =1  --> rot_rawResult = 00001111
 U8 rot_a_result;
 U8 rot_b_result;
+U8 rot_a_look_up[16] = {0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7, 12, 13, 14, 15};
 
 
 // main_loop
@@ -130,6 +131,7 @@ void main_loop()
 			// button state has changed, send message immediately
 			//send_parameter(&btn->param->info);
 			//update_and_queue_param_u8(&btn->param, new_state);
+	    	send_group(0x200);
 	    }
 	    btn->param->data = new_state;
     }
@@ -155,6 +157,7 @@ void main_loop()
 	//left to right is increasing, restarts to 0 at end of range
 	rot_a_result = (rot_a_sw3_in << 2) | (rot_a_sw2_in << 3) | (rot_a_sw1_in << 1) | rot_a_sw0_in;
 	rot_a_result = 15 - rot_a_result;
+	rot_a_result = rot_a_look_up[rot_a_result];
 
 	update_and_queue_param_u8(&swDial_a_ul, rot_a_result);
 
