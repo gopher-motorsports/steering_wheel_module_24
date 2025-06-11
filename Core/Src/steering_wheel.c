@@ -122,7 +122,7 @@ U8 rot_a_look_up[16] = {0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7, 12, 13, 14, 15};
 void main_loop()
 {
 	static U32 lastHeartbeat = 0;
-
+	send_group(0x200);
 	//reading in steering wheel buttons through GPIO pots
 	for (U8 i = 0; i < NUM_OF_BUTTONS; i++) {
 	    BUTTON* btn = buttons[i];
