@@ -167,7 +167,7 @@ void SystemClock_Config(void)
   /** Configure the main internal regulator output voltage
   */
   __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -177,7 +177,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLM = 12;
+  RCC_OscInitStruct.PLL.PLLM = 8;
   RCC_OscInitStruct.PLL.PLLN = 160;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 2;
@@ -196,7 +196,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {
     Error_Handler();
   }
@@ -218,10 +218,10 @@ static void MX_CAN2_Init(void)
 
   /* USER CODE END CAN2_Init 1 */
   hcan2.Instance = CAN2;
-  hcan2.Init.Prescaler = 16;
+  hcan2.Init.Prescaler = 5;
   hcan2.Init.Mode = CAN_MODE_NORMAL;
   hcan2.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan2.Init.TimeSeg1 = CAN_BS1_1TQ;
+  hcan2.Init.TimeSeg1 = CAN_BS1_6TQ;
   hcan2.Init.TimeSeg2 = CAN_BS2_1TQ;
   hcan2.Init.TimeTriggeredMode = DISABLE;
   hcan2.Init.AutoBusOff = DISABLE;
@@ -255,28 +255,26 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, HBEAT_LED_Pin|GSENSE_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, HBEAT_LED_Pin|GSENSE_LED_Pin|FAULT_LED_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : Rot_A_SW0_In_Pin Rot_A_SW1_In_Pin Rot_A_SW3_In_Pin Rot_A_SW2_In_Pin
-                           Rot_B_SW0_In_Pin */
-  GPIO_InitStruct.Pin = Rot_A_SW0_In_Pin|Rot_A_SW1_In_Pin|Rot_A_SW3_In_Pin|Rot_A_SW2_In_Pin
-                          |Rot_B_SW0_In_Pin;
+  /*Configure GPIO pins : Rot_A_SW0_In_Pin Rot_A_SW1_In_Pin Rot_A_SW3_In_Pin Rot_A_SW2_In_Pin */
+  GPIO_InitStruct.Pin = Rot_A_SW0_In_Pin|Rot_A_SW1_In_Pin|Rot_A_SW3_In_Pin|Rot_A_SW2_In_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA0 PA1 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1;
+  /*Configure GPIO pins : PA2 PA3 */
+  GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  GPIO_InitStruct.Alternate = GPIO_AF8_UART4;
+  GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Face_BTN3_In_Pin Face_BTN2_In_Pin Face_BTN5_In_Pin Up_Shift_In_Pin
-                           Rot_B_SW1_In_Pin Rot_B_SW2_In_Pin Rot_B_SW3_In_Pin */
+                           Rot_B_SW0_In_Pin Rot_B_SW1_In_Pin Rot_B_SW2_In_Pin Rot_B_SW3_In_Pin */
   GPIO_InitStruct.Pin = Face_BTN3_In_Pin|Face_BTN2_In_Pin|Face_BTN5_In_Pin|Up_Shift_In_Pin
-                          |Rot_B_SW1_In_Pin|Rot_B_SW2_In_Pin|Rot_B_SW3_In_Pin;
+                          |Rot_B_SW0_In_Pin|Rot_B_SW1_In_Pin|Rot_B_SW2_In_Pin|Rot_B_SW3_In_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -287,8 +285,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : HBEAT_LED_Pin GSENSE_LED_Pin */
-  GPIO_InitStruct.Pin = HBEAT_LED_Pin|GSENSE_LED_Pin;
+  /*Configure GPIO pins : HBEAT_LED_Pin GSENSE_LED_Pin FAULT_LED_Pin */
+  GPIO_InitStruct.Pin = HBEAT_LED_Pin|GSENSE_LED_Pin|FAULT_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

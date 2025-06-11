@@ -65,8 +65,6 @@ void Error_Handler(void);
 #define Rot_A_SW3_In_GPIO_Port GPIOC
 #define Rot_A_SW2_In_Pin GPIO_PIN_3
 #define Rot_A_SW2_In_GPIO_Port GPIOC
-#define Rot_B_SW0_In_Pin GPIO_PIN_4
-#define Rot_B_SW0_In_GPIO_Port GPIOC
 #define Face_BTN3_In_Pin GPIO_PIN_12
 #define Face_BTN3_In_GPIO_Port GPIOB
 #define Face_BTN2_In_Pin GPIO_PIN_13
@@ -87,6 +85,10 @@ void Error_Handler(void);
 #define HBEAT_LED_GPIO_Port GPIOC
 #define GSENSE_LED_Pin GPIO_PIN_11
 #define GSENSE_LED_GPIO_Port GPIOC
+#define FAULT_LED_Pin GPIO_PIN_12
+#define FAULT_LED_GPIO_Port GPIOC
+#define Rot_B_SW0_In_Pin GPIO_PIN_4
+#define Rot_B_SW0_In_GPIO_Port GPIOB
 #define Rot_B_SW1_In_Pin GPIO_PIN_7
 #define Rot_B_SW1_In_GPIO_Port GPIOB
 #define Rot_B_SW2_In_Pin GPIO_PIN_8

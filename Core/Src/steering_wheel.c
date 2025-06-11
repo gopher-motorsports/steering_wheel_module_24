@@ -23,57 +23,44 @@ U8 display_page = 1;
 static void change_led_state(U8 sender, void* UNUSED_LOCAL_PARAM, U8 remote_param, U8 UNUSED1, U8 UNUSED2, U8 UNUSED3);
 static void init_error(void);
 
-BUTTON swUpshift = {
-    .param = &swUpshift_state,
-    .port = Up_Shift_In_GPIO_Port,
-    .pin = Up_Shift_In_Pin
-};
-
-BUTTON swDownshift = {
-    .param = &swDownshift_state,
-    .port = Down_Shift_In_GPIO_Port,
-    .pin = Down_Shift_In_Pin
-};
 
 BUTTON swButton0 = {
-    .param = &swButton0_state,
+    .param = &swButon0_state,
     .port = Face_BTN0_In_GPIO_Port,
     .pin = Face_BTN0_In_Pin
 };
 
 BUTTON swButton1 = {
-    .param = &swButton1_state,
+    .param = &swButon1_state,
     .port = Face_BTN1_In_GPIO_Port,
     .pin = Face_BTN1_In_Pin
 };
 
 BUTTON swButton2 = {
-    .param = &swButton2_state,
+    .param = &swButon2_state,
     .port = Face_BTN2_In_GPIO_Port,
     .pin = Face_BTN2_In_Pin
 };
 
 BUTTON swButton3 = {
-    .param = &swButton3_state,
+    .param = &swButon3_state,
     .port = Face_BTN3_In_GPIO_Port,
     .pin = Face_BTN3_In_Pin
 };
 
 BUTTON swButton4 = {
-    .param = &swButton4_state,
+    .param = &swButon4_state,
     .port = Face_BTN4_In_GPIO_Port,
     .pin = Face_BTN4_In_Pin
 };
 
 BUTTON swButton5 = {
-    .param = &swButton5_state,
+    .param = &swButon5_state,
     .port = Face_BTN5_In_GPIO_Port,
     .pin = Face_BTN5_In_Pin
 };
 
 BUTTON* buttons[NUM_OF_BUTTONS] = {
-    &swUpshift,
-    &swDownshift,
 	&swButton0,
     &swButton1,
     &swButton2,
@@ -145,7 +132,7 @@ U8 rot_a_result;
 U8 rot_b_result;
 
 
-static U8 BTN0, BTN1, BTN2, BTN3, BTN4, BTN5, BTN6, BTN7, ROTA1, ROTA2, ROTA3, ROTA4, ROTB1, ROTB2, ROTB3, ROTB4;
+//static U8 BTN0, BTN1, BTN2, BTN3, BTN4, BTN5, BTN6, BTN7, ROTA1, ROTA2, ROTA3, ROTA4, ROTB1, ROTB2, ROTB3, ROTB4;
 
 
 // main_loop
@@ -172,28 +159,28 @@ void main_loop()
 	}
 	last_displayPageButton_state = new_displayPageButton_state;
 
-	update_and_queue_param_u8(&displayPage_state, display_page + 1);
+	//update_and_queue_param_u8(&displayPage_state, display_page + 1);
 
-	rot_a_sw0_in = HAL_GPIO_ReadPin(Rot_A_SW0_In_GPIO_Port, Rot_A_SW0_In_Pin);
-	rot_a_sw1_in = HAL_GPIO_ReadPin(Rot_A_SW1_In_GPIO_Port, Rot_A_SW1_In_Pin);
-	rot_a_sw2_in = HAL_GPIO_ReadPin(Rot_A_SW2_In_GPIO_Port, Rot_A_SW2_In_Pin);
-	rot_a_sw3_in = HAL_GPIO_ReadPin(Rot_A_SW3_In_GPIO_Port, Rot_A_SW3_In_Pin);
-	rot_b_sw0_in = HAL_GPIO_ReadPin(Rot_B_SW0_In_GPIO_Port, Rot_B_SW0_In_Pin);
-	rot_b_sw1_in = HAL_GPIO_ReadPin(Rot_B_SW1_In_GPIO_Port, Rot_B_SW1_In_Pin);
-	rot_b_sw2_in = HAL_GPIO_ReadPin(Rot_B_SW2_In_GPIO_Port, Rot_B_SW2_In_Pin);
-	rot_b_sw3_in = HAL_GPIO_ReadPin(Rot_B_SW3_In_GPIO_Port, Rot_B_SW3_In_Pin);
+//	rot_a_sw0_in = HAL_GPIO_ReadPin(Rot_A_SW0_In_GPIO_Port, Rot_A_SW0_In_Pin);
+//	rot_a_sw1_in = HAL_GPIO_ReadPin(Rot_A_SW1_In_GPIO_Port, Rot_A_SW1_In_Pin);
+//	rot_a_sw2_in = HAL_GPIO_ReadPin(Rot_A_SW2_In_GPIO_Port, Rot_A_SW2_In_Pin);
+//	rot_a_sw3_in = HAL_GPIO_ReadPin(Rot_A_SW3_In_GPIO_Port, Rot_A_SW3_In_Pin);
+//	rot_b_sw0_in = HAL_GPIO_ReadPin(Rot_B_SW0_In_GPIO_Port, Rot_B_SW0_In_Pin);
+//	rot_b_sw1_in = HAL_GPIO_ReadPin(Rot_B_SW1_In_GPIO_Port, Rot_B_SW1_In_Pin);
+//	rot_b_sw2_in = HAL_GPIO_ReadPin(Rot_B_SW2_In_GPIO_Port, Rot_B_SW2_In_Pin);
+//	rot_b_sw3_in = HAL_GPIO_ReadPin(Rot_B_SW3_In_GPIO_Port, Rot_B_SW3_In_Pin);
 
 	//performing bitwise operations to read in rotary positons
 	//left to right is increasing, restarts to 0 at end of range
 	rot_a_result = (rot_a_sw3_in << 2) | (rot_a_sw2_in << 3) | (rot_a_sw1_in << 1) | rot_a_sw0_in;
 	rot_a_result = 15 - rot_a_result;
 
-	update_and_queue_param_u8(&swDial_a_ul, rot_a_result);
+	//update_and_queue_param_u8(&swDial_a_ul, rot_a_result);
 
 	rot_b_result = (rot_b_sw3_in << 2) | (rot_b_sw2_in << 3) | (rot_b_sw1_in << 1) | rot_b_sw0_in;
 	rot_b_result = 15 - rot_b_result;
 
-	update_and_queue_param_u8(&swDial_b_ul, rot_b_result);
+	//update_and_queue_param_u8(&swDial_b_ul, rot_b_result);
 
 
 	if (HAL_GetTick() - lastHeartbeat > HEARTBEAT_MS_BETWEEN)
