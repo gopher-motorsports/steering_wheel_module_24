@@ -399,7 +399,7 @@ void task_MainTask(void const * argument)
   for(;;)
   {
 	  main_loop();
-	    osDelay(1);
+	  osDelay(10);
   }
   /* USER CODE END 5 */
 }

@@ -123,6 +123,7 @@ void main_loop()
 {
 	static U32 lastHeartbeat = 0;
 	send_group(0x200);
+	send_group(0x201);
 	//reading in steering wheel buttons through GPIO pots
 	for (U8 i = 0; i < NUM_OF_BUTTONS; i++) {
 	    BUTTON* btn = buttons[i];
