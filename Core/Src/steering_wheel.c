@@ -122,7 +122,8 @@ U8 rot_a_look_up[16] = {0, 1, 2, 3, 8, 9, 10, 11, 4, 5, 6, 7, 12, 13, 14, 15};
 void main_loop()
 {
 	static U32 lastHeartbeat = 0;
-	send_group(0x200);
+	send_group(0x250);
+	send_group(0x251);
 	//reading in steering wheel buttons through GPIO pots
 	for (U8 i = 0; i < NUM_OF_BUTTONS; i++) {
 	    BUTTON* btn = buttons[i];
@@ -131,18 +132,19 @@ void main_loop()
 			// button state has changed, send message immediately
 			//send_parameter(&btn->param->info);
 			//update_and_queue_param_u8(&btn->param, new_state);
-	    	send_group(0x200);
+//	    	send_group(0x200);
 	    }
 	    btn->param->data = new_state;
     }
 
-	U8 new_displayPageButton_state = !HAL_GPIO_ReadPin(DISPLAY_PAGE_CHANGE_BUTTON.port, DISPLAY_PAGE_CHANGE_BUTTON.pin);
-	if(new_displayPageButton_state > last_displayPageButton_state) {
-		display_page = (display_page + 1) % (NUM_DISPLAY_PAGES);
-	}
-	last_displayPageButton_state = new_displayPageButton_state;
 
-	update_and_queue_param_u8(&displayPage_state, display_page + 1);
+	displayPage_state.data = !HAL_GPIO_ReadPin(DISPLAY_PAGE_CHANGE_BUTTON.port, DISPLAY_PAGE_CHANGE_BUTTON.pin) + 1;
+//	if(new_displayPageButton_state > last_displayPageButton_state) {
+//		display_page = (display_page + 1) % (NUM_DISPLAY_PAGES);
+//	}
+//	last_displayPageButton_state = new_displayPageButton_state;
+
+	//update_and_queue_param_u8(&displayPage_state, display_page + 1);
 
 	rot_a_sw0_in = HAL_GPIO_ReadPin(Rot_A_SW0_In_GPIO_Port, Rot_A_SW0_In_Pin);
 	rot_a_sw1_in = HAL_GPIO_ReadPin(Rot_A_SW1_In_GPIO_Port, Rot_A_SW1_In_Pin);
